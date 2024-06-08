@@ -213,6 +213,134 @@ class Program
         return sum / count;
     }
 
+    //7. sual M[n][m] de min ve max element arasindaki elementlerin hasilini tap (duz islemir amma cetin kimse run eleye bunlari yaza yaza burda ne gedir orda ne bas verir izah edin getsin
+    static int[] FlattenArray(int[,] matrix)
+    {
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
+        int[] flattenedArray = new int[rows * cols];
+        int index = 0;
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                flattenedArray[index++] = matrix[i, j];
+            }
+        }
+
+        return flattenedArray;
+    }
+
+    static void FindMinAndMaxIndices(int[] array, out int minIndex, out int maxIndex)
+    {
+        minIndex = 0;
+        maxIndex = 0;
+        int min = array[0];
+        int max = array[0];
+
+        for (int i = 1; i < array.Length; i++)
+        {
+            if (array[i] < min)
+            {
+                min = array[i];
+                minIndex = i;
+            }
+            else if (array[i] > max)
+            {
+                max = array[i];
+                maxIndex = i;
+            }
+        }
+    }
+
+    static int MultiplyInRange(int[] array, int minIndex, int maxIndex)
+    {
+        int product = 1;
+        int start = Math.Min(minIndex, maxIndex);
+        int end = Math.Max(minIndex, maxIndex);
+
+        for (int i = start + 1; i < end; i++)
+        {
+            product *= array[i];
+        }
+
+        return product;
+    }
+
+    //8. sual X[n][m] de yeher noqtesini tapma (setrde min sutunda max olanda olur
+    static void FindSaddlePoints(int[,] matrix)
+    {
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
+
+        for (int i = 0; i < rows; i++)
+        {
+            // Find the minimum value in the row
+            int minVal = int.MaxValue;
+            int minIndex = -1;
+            for (int j = 0; j < cols; j++)
+            {
+                if (matrix[i, j] < minVal)
+                {
+                    minVal = matrix[i, j];
+                    minIndex = j;
+                }
+            }
+
+            // Check if the minimum value is also the maximum in its column
+            bool isSaddlePoint = true;
+            for (int k = 0; k < rows; k++)
+            {
+                if (matrix[k, minIndex] > minVal)
+                {
+                    isSaddlePoint = false;
+                    break;
+                }
+            }
+
+            if (isSaddlePoint)
+            {
+                Console.WriteLine("Saddle point found at: (" + i + ", " + minIndex + ")");
+            }
+            else
+            {
+                Console.WriteLine("No saddle points found");
+            }
+        }
+    }
+
+    //9. sual X[n][m] de artmayan ardicil 3 reqemi tapin
+    static void FindNonIncreasingConsecutiveNumbers(int[,] matrix)
+    {
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols - 2; j++)
+            {
+                // Check if three consecutive numbers in the same row are not increasing
+                if (matrix[i, j] >= matrix[i, j + 1] && matrix[i, j + 1] >= matrix[i, j + 2])
+                {
+                    Console.WriteLine("Non-increasing consecutive numbers found in row " + i + ": (" + matrix[i, j] + ", " + matrix[i, j + 1] + ", " + matrix[i, j + 2] + ")");
+                }
+            }
+        }
+
+        for (int j = 0; j < cols; j++)
+        {
+            for (int i = 0; i < rows - 2; i++)
+            {
+                // Check if three consecutive numbers in the same column are not increasing
+                if (matrix[i, j] >= matrix[i + 1, j] && matrix[i + 1, j] >= matrix[i + 2, j])
+                {
+                    Console.WriteLine("Non-increasing consecutive numbers found in column " + j + ": (" + matrix[i, j] + ", " + matrix[i + 1, j] + ", " + matrix[i + 2, j] + ")");
+                }
+            }
+        }
+    }
+
     static void Main()
     {
         /*{
@@ -367,6 +495,51 @@ class Program
 
             double average = AverageWithoutMinMax(matrix);
             Console.WriteLine($"Average without considering min and max: {average:F2}");//:F2 noqteden sonra 2 reqem olsun deyedi yazmasaz da olar
+        }*/
+
+        /*{
+            //7. sual
+            int n = 5; // Number of rows
+            int m = 5; // Number of columns
+            int[,] matrix = new int[n, m];
+
+            FillMatrixWithRandomNumbers(matrix, 1, 10); // Fill matrix with random numbers between 1 and 10
+            Console.WriteLine("Randomly generated matrix:");
+            PrintMatrix(matrix); // Print the generated matrix
+
+            int[] flattenedArray = FlattenArray(matrix);
+            int minIndex, maxIndex;
+            FindMinAndMaxIndices(flattenedArray, out minIndex, out maxIndex);
+
+            int product = MultiplyInRange(flattenedArray, minIndex, maxIndex);
+
+            Console.WriteLine("The product of numbers between the first instance of the min and max numbers is: " + product);
+        }*/
+
+        /*{
+            //sual 8
+            int n = 3; // Number of rows
+            int m = 3; // Number of columns
+            int[,] matrix = new int[n, m];
+
+            FillMatrixWithRandomNumbers(matrix, 1, 10); // Fill matrix with random numbers between 1 and 10
+            Console.WriteLine("Randomly generated matrix:");
+            PrintMatrix(matrix); // Print the generated matrix
+
+            FindSaddlePoints(matrix); // Find saddle points in the matrix
+        }*/
+
+        /*{
+            //sual 9
+            int n = 5; // Number of rows
+            int m = 5; // Number of columns
+            int[,] matrix = new int[n, m];
+
+            FillMatrixWithRandomNumbers(matrix, 1, 10); // Fill matrix with random numbers between 1 and 10
+            Console.WriteLine("Randomly generated matrix:");
+            PrintMatrix(matrix); // Print the generated matrix
+
+            FindNonIncreasingConsecutiveNumbers(matrix); // Find non-increasing consecutive numbers in the matrix
         }*/
     }
 }
