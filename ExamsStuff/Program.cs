@@ -118,10 +118,103 @@ class Program
         return Math.Abs(lastValue - firstValue);
     }
 
+    //4. sual M[n][m] de cemi max olan sutun elementlerini capa cixarma (evvelden yazmisdim birbasa yazdim asagida)
+
+    //5. sual A[n][m] in sehirli kvadrat olmagini yoxla (setirler sutunlar diaqonallar cemi beraber olanda olur)
+    static bool IsMagicSquare(int[,] matrix)
+    {
+        int n = matrix.GetLength(0);
+        int m = matrix.GetLength(1);
+
+        // Check if it's a square matrix
+        if (n != m)
+            return false;
+
+        // Calculate the sum of the first row
+        int sum = 0;
+        for (int j = 0; j < m; j++)
+            sum += matrix[0, j];
+
+        // Check rows
+        for (int i = 1; i < n; i++)
+        {
+            int rowSum = 0;
+            for (int j = 0; j < m; j++)
+                rowSum += matrix[i, j];
+
+            if (rowSum != sum)
+                return false;
+        }
+
+        // Check columns
+        for (int j = 0; j < m; j++)
+        {
+            int colSum = 0;
+            for (int i = 0; i < n; i++)
+                colSum += matrix[i, j];
+
+            if (colSum != sum)
+                return false;
+        }
+
+        // Check main diagonal
+        int diagSum1 = 0;
+        for (int i = 0; i < n; i++)
+            diagSum1 += matrix[i, i];
+        if (diagSum1 != sum)
+            return false;
+
+        // Check secondary diagonal
+        int diagSum2 = 0;
+        for (int i = 0; i < n; i++)
+            diagSum2 += matrix[i, n - i - 1];
+        if (diagSum2 != sum)
+            return false;
+
+        return true;
+    }
+
+    //6. sual M[n][m] de min ve max elementi nezere almadan massivin ortalamasini tap
+    static double AverageWithoutMinMax(int[,] matrix)
+    {
+        int n = matrix.GetLength(0);
+        int m = matrix.GetLength(1);
+
+        // Find min and max values
+        int min = int.MaxValue;
+        int max = int.MinValue;
+        foreach (int element in matrix)
+        {
+            if (element < min)
+                min = element;
+            if (element > max)
+                max = element;
+        }
+
+        // Calculate sum and count, excluding min and max values
+        double sum = 0;
+        int count = 0;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                int current = matrix[i, j];
+                if (current != min && current != max)
+                {
+                    sum += current;
+                    count++;
+                }
+            }
+        }
+
+        // Calculate average
+        if (count == 0)
+            return 0; // to avoid division by zero
+        return sum / count;
+    }
 
     static void Main()
     {
-
         /*{
             //1. sual
             Console.Write("Enter the number of rows (n): ");
@@ -201,7 +294,79 @@ class Program
             Console.WriteLine($"Difference between the first and last numbers: {difference}");
         }*/
 
+        /*{
+            //4. sual
+            int n = 0;
+            int[,] M = new int[5, 5];
+            int sum = 0;
 
+            // Fill the matrix
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    M[i, j] = new Random().Next(1, 10);
+                    Console.Write(M[i, j] + "\t"); // Print matrix elements
+                }
+                Console.WriteLine();
+            }
 
+            // Find the column with the highest sum
+            for (int j = 0; j < 5; j++)
+            {
+                int colSum = 0;
+                for (int i = 0; i < 5; i++)
+                {
+                    colSum += M[i, j];
+                }
+
+                if (colSum > sum)
+                {
+                    sum = colSum;
+                    n = j;
+                }
+            }
+
+            // Print the column with the highest sum and its sum
+            Console.WriteLine();
+            Console.WriteLine($"Column with the highest sum is column {n + 1}:");
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine(M[i, n]);
+            }
+            Console.WriteLine("Sum of the column with the highest sum: " + sum);
+        }*/
+
+        /*{
+            //5. sual
+            int n = 5; // Change the dimensions of the matrix as needed
+            int[,] matrix = new int[n, n];
+
+            FillMatrixWithRandomNumbers(matrix, 1, 9);
+
+            Console.WriteLine("Generated Matrix:");
+            PrintMatrix(matrix);
+
+            if (IsMagicSquare(matrix))
+                Console.WriteLine("It's a magic square.");
+            else
+                Console.WriteLine("It's not a magic square.");
+        }*/
+
+        /*{
+            //6.sual
+            int n = 3; // Change the dimensions of the matrix as needed
+            int m = 3;
+            int[,] matrix = new int[n, m];
+
+            // Fill matrix with random numbers between 1 and 100
+            FillMatrixWithRandomNumbers(matrix, 1, 100);
+
+            Console.WriteLine("Generated Matrix:");
+            PrintMatrix(matrix);
+
+            double average = AverageWithoutMinMax(matrix);
+            Console.WriteLine($"Average without considering min and max: {average:F2}");//:F2 noqteden sonra 2 reqem olsun deyedi yazmasaz da olar
+        }*/
     }
 }
